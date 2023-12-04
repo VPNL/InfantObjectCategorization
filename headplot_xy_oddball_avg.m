@@ -135,7 +135,7 @@
 % 01-25-02 reformated help & license, added links -ad 
 % 03-21-02 added readlocs and the use of eloc input structure -ad 
 
-function [HeadAxes, ColorbarHandle] = headplot(values, arg1, varargin)
+function [HeadAxes, ColorbarHandle] = headplot_xy_oddball_avg(values, arg1, varargin)
 
 if nargin < 1
     help headplot
@@ -763,16 +763,17 @@ function plotelec(newElect, ElectrodeNames, HeadCenter, opt);
                 end
             else  % plot electrode markers 
                 OT=[57 58 59 64 65 63 68 90 91 95 96 100 99 94];
+                OT2=[50,101];
 %                 OCC = [71 76 75 70 69 74 82 83 89];
                 if ismember(i,OT+3)
                     opt.MarkerColor = [0 0 0]
-%                 elseif ismember(i,OCC+3)
-%                     opt.MarkerColor = [1 1 1]
+                elseif ismember(i,OT2+3)
+                    opt.MarkerColor = [0 1 0]
                 else
                     opt.MarkerColor = [0.5 0.5 0.5]
                 end
                 line(newElect(i,1),newElect(i,2),newElect(i,3),'marker',...
-                    '.','markersize',5,'color',opt.MarkerColor,'linestyle','none');
+                    '.','markersize',3,'color',opt.MarkerColor,'linestyle','none');
             end
     end;
  end

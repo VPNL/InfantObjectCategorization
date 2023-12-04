@@ -135,7 +135,7 @@
 % 01-25-02 reformated help & license, added links -ad 
 % 03-21-02 added readlocs and the use of eloc input structure -ad 
 
-function [HeadAxes, ColorbarHandle] = headplot(values, arg1, varargin)
+function [HeadAxes, ColorbarHandle] = headplot_xy_carrier_avg(values, arg1, varargin)
 
 if nargin < 1
     help headplot
@@ -653,9 +653,9 @@ else
   if strcmp(g.electrodes,'on') % plot the electrode locations
       if exist('newElect')
           plotelecopt.labelflag = g.labels;
-          %modify channel 89 and 102 y-location - XY
-          newElect(92,2) = newElect(92,2)-30;
-          newElect(102,2) = -52;
+          %modify channel 89 y-location - XY
+           newElect(92,2) = newElect(92,2)-30;
+           newElect(102,2) = -52;
           plotelec(newElect, ElectrodeNames, HeadCenter, plotelecopt);
       else
           fprintf('Variable newElect not read from spline file.\n');
@@ -743,7 +743,7 @@ function plotelec(newElect, ElectrodeNames, HeadCenter, opt);
     newNames = newElect*opt.NamesDFac; % Calculate electrode label positions
     for i = 1:size(newElect,1)
         if newElect(i,:) ~= [0 0 0]  % plot radial lines to electrode sites
-            %commented out by XY
+            %commented out by xy
 %             line([newElect(i,1) HeadCenter(1)],[newElect(i,2) HeadCenter(2)],...
 %                  [newElect(i,3) HeadCenter(3)],'color',opt.MarkerColor,'linewidth',1);
             
@@ -763,18 +763,20 @@ function plotelec(newElect, ElectrodeNames, HeadCenter, opt);
                 end
             else  % plot electrode markers 
                 OT=[57 58 59 64 65 63 68 90 91 95 96 100 99 94];
-%                 OCC = [71 76 75 70 69 74 82 83 89];
-                if ismember(i,OT+3)
+                OCC = [71 76 75 70 69 74 82 83 89];
+%                 if ismember(i,OT+3)
+%                     opt.MarkerColor = [0 0 0]
+                if ismember(i,OCC+3)
                     opt.MarkerColor = [0 0 0]
-%                 elseif ismember(i,OCC+3)
-%                     opt.MarkerColor = [1 1 1]
+                elseif ismember(i,[72,66,84,73,81,88]+3)
+                    opt.MarkerColor = [1 1 1]
                 else
                     opt.MarkerColor = [0.5 0.5 0.5]
                 end
                 line(newElect(i,1),newElect(i,2),newElect(i,3),'marker',...
-                    '.','markersize',5,'color',opt.MarkerColor,'linestyle','none');
+                    '.','markersize',3,'color',opt.MarkerColor,'linestyle','none');
             end
-    end;
+        end
  end
     
 % get mesh information
