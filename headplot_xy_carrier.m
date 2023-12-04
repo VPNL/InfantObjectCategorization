@@ -772,7 +772,7 @@ function plotelec(newElect, ElectrodeNames, HeadCenter, opt);
                     opt.MarkerColor = [0.5 0.5 0.5]
                 end
                 line(newElect(i,1),newElect(i,2),newElect(i,3),'marker',...
-                    '.','markersize',12,'color',opt.MarkerColor,'linestyle','none');
+                    '.','markersize',3,'color',opt.MarkerColor,'linestyle','none');
             end
     end;
  end

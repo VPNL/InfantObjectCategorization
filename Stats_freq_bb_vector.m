@@ -1,8 +1,13 @@
 %% ODDBALL: INDIVIDUAL HARMONICS
 clear;clc;close all;
-bbpath = '';
+% addpath(genpath('/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/code2021'));
+% bbpath = '/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/data/prelimresults/2021 dataset bb/arranged_dataset';
+% cd(bbpath)
+% addpath(genpath('/Users/xiaoqian/Desktop/code2021'))
+% bbpath = '/Users/xiaoqian/Desktop/arranged_dataset';
+bbpath = 'D:\Stanford_infant_EEG\infant_EEG_mac_allfiles\arranged_dataset\';
 cd(bbpath)
-load('New3Groups_arranged_EEGData_oddball.mat');
+load('New3Groups_arranged_EEGData_oddball.mat');%NONFILTERED DATA, SO SHOULD NOT CALLED ODDBALL
 
 LeftOT_bb = [57 58 59 64 65 63 68]; %removed chan68 % 63
 RightOT_bb = [90 91 95 96 100 94 99];
@@ -64,12 +69,16 @@ for roi = 3
         % check if we have NaNs in the data, and we should have 0
         dataNanCounts = cellfun(@(x) sum(isnan(x(:))), mEEGData, 'Uni',false)
         size(mEEGData{1})
+%         roiData = cellfun(@(x) nanmean(x(:,rois),2),mEEGData,'uni',false);
+%         fftData = cellfun(@(x) fft(x),roiData,'uni',false);
+%         offtDataAmp = cellfun(@(x) x/LenSignal,fftData,'uni',false);
 
         fftData = cellfun(@(x) fft(x),mEEGData,'uni',false);
         roiData = cellfun(@(x) nanmean(x(:,rois),2),fftData,'uni',false);
         offtDataAmp = cellfun(@(x) x/LenSignal,roiData,'uni',false);
 
         %start stats analysis
+%         oddb_ix = [3,5,7,9];
         oddb_ix = [3,5];
         FinalResults = [];
         for con = 1:5
@@ -85,8 +94,8 @@ for roi = 3
         end
     end
 end
+size(allpvals)
 %%
-% size(allpvals)
 squeeze(allpvals(1,3:4,4,:))
 uncorrect_ps = (allpvals<= .05);
 figure('units','normalized','position',[0 0 1 1]);
@@ -176,9 +185,13 @@ saveas(gcf,fullfile(bbpath_stats,figname))
 
 %% CARRIER - INDIVIDUAL HARMONICS
 clear;clc;close all;
-bbpath = '';
+% addpath(genpath('/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/code2021'));
+% bbpath = '/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/data/prelimresults/2021 dataset bb/arranged_dataset';
+
+addpath(genpath('/Users/xiaoqian/Desktop/code2021'))
+bbpath = '/Users/xiaoqian/Desktop/arranged_dataset';
 cd(bbpath)
-load('New3Groups_arranged_EEGData_oddball.mat');
+load('New3Groups_arranged_EEGData_oddball.mat');%NONFILTERED DATA, SO SHOULD NOT CALLED ODDBALL
 
 LeftOT_bb = [57 58 59 64 65 63 68]; %removed chan68 % 63
 RightOT_bb = [90 91 95 96 100 94 99];

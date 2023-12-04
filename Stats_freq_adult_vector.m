@@ -1,6 +1,8 @@
 %% ODDBALL: INDIVIDUAL HARMONICS
 clear;clc;close all;
-adpath = '';
+% addpath(genpath('/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/code2021'));
+% adpath = '/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/data/prelimresults/2021 dataset adult/arranged_dataset/4Hz/';
+adpath = 'D:\Stanford_infant_EEG\infant_EEG_mac_allfiles\adult_4hz\';
 cd(adpath);
 load('new_arranged_data_4Hz.mat');
 LeftOT_bb = [50 57 58 59 64 65]; %removed chan68 % 63
@@ -16,10 +18,10 @@ parietal_limb = [52 53 60 61 67 62 77 78 85 86 92 72 62];
 % rois = OCCROI;
 % roiname = 'OTROI';
 % rois = OTROI;
-% roiname = 'RightOTROI';
-% rois = RightOT_bb;
-roiname = 'LeftOTROI';
-rois = LeftOT_bb;
+roiname = 'RightOTROI';
+rois = RightOT_bb;
+% roiname = 'LeftOTROI';
+% rois = LeftOT_bb;
 % rois = parietal_limb;
 % roiname = 'ParietalROI';
 
@@ -55,6 +57,8 @@ groupData = combineCells(offtDataAmp,1,0);
 groupData = cellfun(@(x) squeeze(x), groupData,'uni',false);
 
 %start stats analysis
+% oddb_ix = [3,5,7,9,11,13,15,17,19,21];  
+% oddb_ix = [3,5,7,9,13,15,17,19];  
 oddb_ix = [11,21,31,41];
 FinalResults = [];
 allpvals = [];
@@ -77,8 +81,9 @@ for con = 1:5
 end
 
 %FDR correction
-[h, crit_p, adj_ci_cvrg, adj_p]=fdr_bh(allpvals,0.05,'pdep','yes');
-adpath_stats = fullfile(adpath,'stats_freq_dbaker_methods');mkdir(adpath_stats);
+[h, crit_p, adj_ci_cvrg, adj_p]=fdr_bh(allpvals,0.01,'pdep','yes')
+adpath_stats = fullfile(adpath,'stats_freq_dbaker_methods');
+mkdir(adpath_stats);
 filename = sprintf('stats_freq_%s_oddball_adult.mat',roiname);
 % save(fullfile(adpath_stats,filename),'allpvals','h','crit_p','adj_p');
 
@@ -119,7 +124,9 @@ saveas(gcf,fullfile(adpath_stats,figname))
 
 %% CARRIER - INDIVIDUAL HARMONICS
 clear;clc;close all;
-adpath = '';
+% addpath(genpath('/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/code2021'));
+% adpath = '/oak/stanford/groups/kalanit/biac2/kgs/projects/babybrains/eeg/data/prelimresults/2021 dataset adult/arranged_dataset/4Hz/';
+adpath = 'D:\Stanford_infant_EEG\infant_EEG_mac_allfiles\adult_4hz\';
 cd(adpath);
 load('new_arranged_data_4Hz.mat');
 
@@ -136,10 +143,10 @@ OTROI = [LeftOT_bb,RightOT_bb];
 OCCROI = Posterior_bb;
 pos_merge = [posROI,cenROI];
 
-% roiname = 'OCCROI';
-% rois = OCCROI;
-roiname = 'OTROI';
-rois = OTROI;
+roiname = 'OCCROI';
+rois = OCCROI;
+% roiname = 'OTROI';
+% rois = OTROI;
 % roiname = 'RightOTROI';
 % rois = RightOT_bb;
 % roiname = 'LeftOTROI';
@@ -192,13 +199,15 @@ end
 
 %FDR correction
 allpvals = squeeze(allpvals)
-[h, crit_p, adj_ci_cvrg, adj_p]=fdr_bh(allpvals,0.05,'pdep','yes');
-
+[h, crit_p, adj_ci_cvrg, adj_p]=fdr_bh(allpvals,0.05,'pdep','yes')
+%%
 bbpath_stats = fullfile(adpath,'stats_adult_freq_dbaker_methods');
 filename = sprintf('stats_freq_adult_%s_carri.mat',roiname);
 save(fullfile(adpath,filename),'allpvals','h','crit_p','adj_p');
 
 % plot the pval
+% to be edited: use log(10)x to convert the pval to 10-x format
+
 figure('position',[100 100 400 350],'color','w')
 b = bar(h);
 b.FaceColor = 'k';
